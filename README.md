@@ -3,3 +3,19 @@
   ```js
   setCount((prevCount) => prevCount + 1);
   ```
+
+- Don't forget about 2-way binding (`selected` prop in this case):
+
+  ```js
+  export const ExpensesFilter = ({ selected, onChangeFilter }: Props) => {
+    const changeHandler = (event) => {
+      onChangeFilter(event.target.value);
+    };
+
+    return (
+      <select value={selected} onChange={changeHandler}>
+        ...
+      </select>
+    );
+  };
+  ```

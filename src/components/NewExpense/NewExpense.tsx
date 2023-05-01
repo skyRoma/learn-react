@@ -7,14 +7,14 @@ interface NewExpenseProps {
 }
 
 export const NewExpense = ({ onAddExpense }: NewExpenseProps) => {
-  const saveExpenseDataHandler = (enteredExpenseData: NewExpenseData) => {
+  const saveExpenseHandler = (enteredExpenseData: NewExpenseData) => {
     const expenseData = { ...enteredExpenseData, id: Math.random().toString() };
     onAddExpense(expenseData);
   };
 
   return (
     <div className="new-expense">
-      <ExpenseForm onSaveExpense={saveExpenseDataHandler} />
+      <ExpenseForm onSaveExpense={saveExpenseHandler} />
     </div>
   );
 };

@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { ExpenseData } from '../../types';
 import { Card } from '../UI/Card';
+import { ExpensesFilter } from './ExpenseFilter/ExpensesFilter';
 import { ExpenseItem } from './ExpenseItem';
 import './Expenses.css';
 
@@ -8,8 +10,18 @@ interface ExpenseProps {
 }
 
 export const Expenses = ({ expenses }: ExpenseProps) => {
+  const [selectedYear, setSelectedYear] = useState('2020');
+
+  const changeFilterHandler = (year: string) => {
+    setSelectedYear(year);
+  };
+
   return (
     <Card className="expenses">
+      <ExpensesFilter
+        selected={selectedYear}
+        onChangeFilter={changeFilterHandler}
+      />
       <ExpenseItem
         title={expenses[0].title}
         amount={expenses[0].amount}
