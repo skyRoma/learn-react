@@ -1,5 +1,7 @@
 import './App.css';
 import { Expenses } from './components/Expenses/Expenses';
+import { NewExpense } from './components/NewExpense/NewExpense';
+import { ExpenseData } from './types';
 
 export const App = () => {
   const expenses = [
@@ -24,5 +26,16 @@ export const App = () => {
     },
   ];
 
-  return <Expenses expenses={expenses} />;
+  const addExpenseHandler = (newExpenseData: ExpenseData) => {
+    expenses.push(newExpenseData);
+
+    console.log(expenses);
+  };
+
+  return (
+    <div>
+      <NewExpense onAddExpense={addExpenseHandler} />
+      <Expenses expenses={expenses} />
+    </div>
+  );
 };

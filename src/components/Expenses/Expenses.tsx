@@ -1,9 +1,10 @@
+import { ExpenseData } from '../../types';
 import { Card } from '../UI/Card';
-import { ExpenseItem, ExpenseItemProps } from './ExpenseItem';
+import { ExpenseItem } from './ExpenseItem';
 import './Expenses.css';
 
 interface ExpenseProps {
-  expenses: ExpenseItemProps[];
+  expenses: ExpenseData[];
 }
 
 export const Expenses = ({ expenses }: ExpenseProps) => {
