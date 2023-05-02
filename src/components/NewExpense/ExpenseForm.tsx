@@ -4,11 +4,10 @@ import { NewExpenseData } from '../../types';
 
 interface ExpenseFormProps {
   onSaveExpense: (data: NewExpenseData) => void;
+  onCancel: () => void;
 }
 
-export const ExpenseForm = ({
-  onSaveExpense: onSaveExpenseData,
-}: ExpenseFormProps) => {
+export const ExpenseForm = ({ onSaveExpense, onCancel }: ExpenseFormProps) => {
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredAmount, setEnteredAmount] = useState('');
   const [enteredDate, setEnteredDate] = useState('');
@@ -38,7 +37,7 @@ export const ExpenseForm = ({
     setEnteredAmount('');
     setEnteredDate('');
 
-    onSaveExpenseData(expenseData);
+    onSaveExpense(expenseData);
   };
 
   return (
@@ -74,6 +73,7 @@ export const ExpenseForm = ({
         </div>
       </div>
       <div className="new-expense__actions">
+        <button onClick={onCancel}>Cancel</button>
         <button type="submit">Add Expense</button>
       </div>
     </form>
