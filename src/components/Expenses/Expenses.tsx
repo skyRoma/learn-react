@@ -4,6 +4,7 @@ import { ExpenseData } from '../../types';
 import { Card } from '../UI/Card';
 import { ExpensesFilter } from './ExpenseFilter/ExpensesFilter';
 import { ExpensesList } from './ExpensesList/ExpensesList';
+import { Chart } from '../Chart/Chart';
 
 interface ExpenseProps {
   expenses: ExpenseData[];
@@ -26,6 +27,7 @@ export const Expenses = ({ expenses }: ExpenseProps) => {
         selected={selectedYear}
         onChangeFilter={changeFilterHandler}
       />
+      <Chart items={filteredExpenses} />
       <ExpensesList items={filteredExpenses} />
     </Card>
   );
