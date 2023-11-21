@@ -83,11 +83,19 @@
   }
   ```
 
+- All files stored in the `public` folder are publicly available (`localhost:5173/some-image.jpg`) and will be served alongside with the `index.html` file, so they can be referenced globally in `index.html`, `index.css` or in the any component:
+
+  ```html
+  <img src="game-logo.png" />
+  ```
+
 - If the new state is computed using the previous state, it's better to pass a function to setState. The function will receive the previous value, and return an updated value:
 
   ```js
   setCount((prevCount) => prevCount + 1);
   ```
+
+  [Detailed explanation how state update works](https://react.dev/learn/queueing-a-series-of-state-updates)
 
 - Don't forget about 2-way binding (`selected` prop in this case):
 
