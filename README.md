@@ -97,6 +97,8 @@
 
   [Detailed explanation how state update works](https://react.dev/learn/queueing-a-series-of-state-updates)
 
+- `event.target.value` from the input field is always of type `String`;
+
 - Don't forget about 2-way binding (`selected` prop in this case):
 
   ```js
