@@ -99,6 +99,15 @@
 
 - `event.target.value` from the input field is always of type `String`;
 
+- `import ./Header.css` - vanilla CSS styles are not scoped to components;
+- `import classes from './Header.module.css'` - css module styles are scoped;
+
+- Styled Components `props` should be named with `$` prefix to not clash build-in props:
+
+  ```js
+  <StyledInput $invalid="{emailNotValid}" />
+  ```
+
 - Don't forget about 2-way binding (`selected` prop in this case):
 
   ```js
