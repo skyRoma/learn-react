@@ -123,3 +123,15 @@
     );
   };
   ```
+
+- Strict Mode enables the following development-only behaviors:
+
+  - Components will re-render an extra time to find bugs caused by impure rendering.
+  - Components will re-run Effects an extra time to find bugs caused by missing Effect cleanup.
+  - Components will be checked for usage of deprecated APIs.
+
+  ```js
+  <StrictMode>
+    <App />
+  </StrictMode>
+  ```
