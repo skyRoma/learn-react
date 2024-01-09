@@ -112,12 +112,12 @@
 
   ```js
   export const ExpensesFilter = ({ selected, onChangeFilter }: Props) => {
-    const changeHandler = (event) => {
+    const handleChange = (event) => {
       onChangeFilter(event.target.value);
     };
 
     return (
-      <select value={selected} onChange={changeHandler}>
+      <select value={selected} onChange={handleChange}>
         ...
       </select>
     );
@@ -135,3 +135,65 @@
     <App />
   </StrictMode>
   ```
+
+- Refs
+
+  - without:
+
+  ```jsx
+  export default function Player() {
+    const [name, setName] = useState(null);
+    const [enteredName, setEnteredName] = useState(null);
+
+    const handleChange = (event) => {
+      setName(event.target.value);
+    };
+
+    const handleClick = () => {
+      setEnteredName(name);
+      setName('');
+    };
+
+    return (
+      <section id="player">
+        <h2>Welcome {enteredName || 'unknown entity'}</h2>
+        <p>
+          <input type="text" onChange={handleChange} value={name} />
+          <button onClick={handleClick}>Set Name</button>
+        </p>
+      </section>
+    );
+  }
+  ```
+
+  - with:
+
+  ```jsx
+  export default function Player() {
+    const inputRef = useRef();
+
+    const [playerName, setPlayerName] = useState('');
+
+    const handleClick = () => {
+      setPlayerName(inputRef.current.value);
+      inputRef.current.value = '';
+    };
+
+    return (
+      <section id="player">
+        <h2>Welcome {playerName || 'unknown entity'}</h2>
+        <p>
+          <input type="text" ref={inputRef} />
+          <button onClick={handleClick}>Set Name</button>
+        </p>
+      </section>
+    );
+  }
+  ```
+
+- `inputRef.current` is undefined during the first render, since `inputRef` is not connected to `input` yet;
+
+- `Refs` can be used like instance fields in classes, i.e. if we want to store some value between component renders but not to update the UI when this value is changed (unlike `state`);
+
+- Use `forwardRef` to pass the `ref` from one component to another;
+- Use `useImperativeHandle` together with `forwardRef` to expose the child's public API to the parent component;
