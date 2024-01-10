@@ -21,7 +21,7 @@ export const App = () => {
     setProjectState((prevProjectState) => {
       return {
         projects: [...prevProjectState.projects, newProject],
-        selectedProjectId: null,
+        selectedProjectId: undefined,
       };
     });
   };
@@ -38,7 +38,10 @@ export const App = () => {
 
   return (
     <main className="h-screen my-8 flex gap-8">
-      <ProjectsSidebar onStartAddProject={handleStartAddProject} />
+      <ProjectsSidebar
+        onStartAddProject={handleStartAddProject}
+        projects={projectState.projects}
+      />
       {content}
     </main>
   );
