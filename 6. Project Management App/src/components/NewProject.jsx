@@ -40,6 +40,7 @@ export const NewProject = ({ onAddProject, onCancelAddProject }) => {
           Please enter a valid title, description, and due date.
         </p>
       </Modal>
+
       <div className="w-[35rem] mt-16">
         <menu className="flex items-center justify-end gap-4 my-4">
           <li>

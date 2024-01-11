@@ -27,6 +27,7 @@ export const App = () => {
 
     setProjectState((prevProjectState) => {
       return {
+        ...prevProjectState,
         projects: [...prevProjectState.projects, newProject],
         selectedProjectId: newProject.id,
       };
@@ -39,10 +40,27 @@ export const App = () => {
     });
   };
 
+  const handleDeleteProject = () => {
+    setProjectState((prevProjectState) => {
+      return {
+        ...prevProjectState,
+        projects: prevProjectState.projects.filter(
+          (project) => project.id !== prevProjectState.selectedProjectId
+        ),
+        selectedProjectId: undefined,
+      };
+    });
+  };
+
   const selectedProject = projectState.projects.find(
     (project) => project.id === projectState.selectedProjectId
   );
-  let content = <SelectedProject project={selectedProject} />;
+  let content = (
+    <SelectedProject
+      project={selectedProject}
+      onDeleteProject={handleDeleteProject}
+    />
+  );
 
   if (projectState.selectedProjectId === undefined) {
     content = <NoProjectSelected onStartAddProject={handleStartAddProject} />;
