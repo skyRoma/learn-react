@@ -197,3 +197,5 @@
 
 - Use `forwardRef` to pass the `ref` from one component to another;
 - Use `useImperativeHandle` together with `forwardRef` to expose the child's public API to the parent component;
+
+- `Prop Drilling` - Passing shared data through multiple component layers;
