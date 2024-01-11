@@ -8,6 +8,7 @@ export const App = () => {
   const [projectState, setProjectState] = useState({
     selectedProjectId: undefined,
     projects: [],
+    tasks: [],
   });
 
   const handleStartAddProject = () => {
@@ -42,12 +43,38 @@ export const App = () => {
 
   const handleDeleteProject = () => {
     setProjectState((prevProjectState) => {
+      const newProjects = prevProjectState.projects.filter(
+        (project) => project.id !== prevProjectState.selectedProjectId
+      );
+
       return {
         ...prevProjectState,
-        projects: prevProjectState.projects.filter(
-          (project) => project.id !== prevProjectState.selectedProjectId
-        ),
-        selectedProjectId: undefined,
+        projects: newProjects,
+        selectedProjectId: newProjects[0]?.id,
+      };
+    });
+  };
+
+  const handleAddTask = (taskData) => {
+    setProjectState((prevProjectState) => {
+      const newTask = {
+        text: taskData,
+        id: Math.random().toString(),
+        projectId: prevProjectState.selectedProjectId,
+      };
+
+      return {
+        ...prevProjectState,
+        tasks: [newTask, ...prevProjectState.tasks],
+      };
+    });
+  };
+
+  const handleDeleteTask = (taskId) => {
+    setProjectState((prevProjectState) => {
+      return {
+        ...prevProjectState,
+        tasks: prevProjectState.tasks.filter((task) => task.id !== taskId),
       };
     });
   };
@@ -55,10 +82,17 @@ export const App = () => {
   const selectedProject = projectState.projects.find(
     (project) => project.id === projectState.selectedProjectId
   );
+  const selectedProjectTasks = projectState.tasks.filter(
+    (task) => task.projectId === projectState.selectedProjectId
+  );
+
   let content = (
     <SelectedProject
       project={selectedProject}
+      tasks={selectedProjectTasks}
       onDeleteProject={handleDeleteProject}
+      onAddTask={handleAddTask}
+      onDeleteTask={handleDeleteTask}
     />
   );
 
