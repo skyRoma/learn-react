@@ -205,3 +205,6 @@
   ```js
   export const CartContext = createContext({ items: [] });
   ```
+
+- callback inside `useEffect(cb, [])` is executed only after the component function is executed/rendered. And this `cb` is executed only once if the 2nd argument is an empty array `[]`. Without 2nd argument it will be executed after every component render cycle;
+- not every side effect needs `useEffect`. We need it only to prevent infinite loops or we have code that can only run after the component function is executed at least once;

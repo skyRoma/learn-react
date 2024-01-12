@@ -1,15 +1,33 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 
 import { Places } from './components/Places.jsx';
 import { AVAILABLE_PLACES } from './data.js';
 import { Modal } from './components/Modal.jsx';
 import { DeleteConfirmation } from './components/DeleteConfirmation.jsx';
+import { sortPlacesByDistance } from './loc.js';
 import logoImg from './assets/logo.png';
 
+const storedIds = JSON.parse(localStorage.getItem('pickedPlaces')) || [];
+const storedPlaces = storedIds.map((id) =>
+  AVAILABLE_PLACES.find((place) => place.id === id)
+);
+
 export const App = () => {
+  const [availablePlaces, setAvailablePlaces] = useState([]);
   const modal = useRef();
   const selectedPlace = useRef();
-  const [pickedPlaces, setPickedPlaces] = useState([]);
+  const [pickedPlaces, setPickedPlaces] = useState(storedPlaces);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      const sortedPlaces = sortPlacesByDistance(
+        AVAILABLE_PLACES,
+        position.coords.latitude,
+        position.coords.longitude
+      );
+      setAvailablePlaces(sortedPlaces);
+    });
+  }, []);
 
   function handleStartRemovePlace(id) {
     modal.current.open();
@@ -20,12 +38,18 @@ export const App = () => {
     modal.current.close();
   }
 
-  function handleSelectPlace(id) {
+  function handlePickPlace(id) {
     setPickedPlaces((prevPickedPlaces) => {
       if (prevPickedPlaces.some((place) => place.id === id)) {
         return prevPickedPlaces;
       }
       const place = AVAILABLE_PLACES.find((place) => place.id === id);
+
+      localStorage.setItem(
+        'pickedPlaces',
+        JSON.stringify([id, ...prevPickedPlaces.map((place) => place.id)])
+      );
+
       return [place, ...prevPickedPlaces];
     });
   }
@@ -35,6 +59,18 @@ export const App = () => {
       prevPickedPlaces.filter((place) => place.id !== selectedPlace.current)
     );
     modal.current.close();
+
+    localStorage.setItem(
+      'pickedPlaces',
+      JSON.stringify(
+        pickedPlaces.reduce((acc, place) => {
+          if (place.id !== selectedPlace.current) {
+            acc.push(place.id);
+          }
+          return acc;
+        }, [])
+      )
+    );
   }
 
   return (
@@ -63,8 +99,9 @@ export const App = () => {
         />
         <Places
           title="Available Places"
-          places={AVAILABLE_PLACES}
-          onSelectPlace={handleSelectPlace}
+          places={availablePlaces}
+          fallbackText={'Sorting places by distance...'}
+          onSelectPlace={handlePickPlace}
         />
       </main>
     </>
