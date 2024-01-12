@@ -1,4 +1,9 @@
-export const Cart = ({ items, onUpdateItemQuantity }) => {
+import { useContext } from 'react';
+import { CartContext } from '../store/shopping-cart-context';
+
+export const Cart = () => {
+  const { items, updateItemQuantity } = useContext(CartContext);
+
   const totalPrice = items.reduce(
     (acc, item) => acc + item.price * item.quantity,
     0
@@ -20,11 +25,11 @@ export const Cart = ({ items, onUpdateItemQuantity }) => {
                   <span> ({formattedPrice})</span>
                 </div>
                 <div className="cart-item-actions">
-                  <button onClick={() => onUpdateItemQuantity(item.id, -1)}>
+                  <button onClick={() => updateItemQuantity(item.id, -1)}>
                     -
                   </button>
                   <span>{item.quantity}</span>
-                  <button onClick={() => onUpdateItemQuantity(item.id, 1)}>
+                  <button onClick={() => updateItemQuantity(item.id, 1)}>
                     +
                   </button>
                 </div>

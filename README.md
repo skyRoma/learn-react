@@ -199,3 +199,9 @@
 - Use `useImperativeHandle` together with `forwardRef` to expose the child's public API to the parent component;
 
 - `Prop Drilling` - Passing shared data through multiple component layers;
+
+- The default value set when creating the context is only used if a component that was not wrapped by the `Provider` component tries to access the context value and for better autocompletion:
+
+  ```js
+  export const CartContext = createContext({ items: [] });
+  ```
