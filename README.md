@@ -206,5 +206,12 @@
   export const CartContext = createContext({ items: [] });
   ```
 
-- callback inside `useEffect(cb, [])` is executed only after the component function is executed/rendered. And this `cb` is executed only once if the 2nd argument is an empty array `[]`. Without 2nd argument it will be executed after every component render cycle;
+- callback inside `useEffect(cb, [deps])` is executed only after the component function is executed/rendered. And this `cb` is executed only once if the 2nd argument is an empty array `[]`. Without 2nd argument it will be executed after every component render cycle;
+
 - not every side effect needs `useEffect`. We need it only to prevent infinite loops or we have code that can only run after the component function is executed at least once;
+
+- Cleanup function in `useEffect` runs every time before a new call of `useEffect` callback function and after the component is removed from the DOM;
+
+- If the `useEffect` dependency is a function created inside a component then it could lead to an infinite loop, since every render creates a new instance of that function `new function(){} !== new function(){}`;
+
+- To fix the issue above there is a `useCallback(cb, [deps])` hook that lets you cache a function definition between re-renders. If the `useCallback` dependencies change react will recreate (`NOT CALL!!!`) a function;
