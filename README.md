@@ -215,3 +215,5 @@
 - If the `useEffect` dependency is a function created inside a component then it could lead to an infinite loop, since every render creates a new instance of that function `new function(){} !== new function(){}`;
 
 - To fix the issue above there is a `useCallback(cb, [deps])` hook that lets you cache a function definition between re-renders. If the `useCallback` dependencies change react will recreate (`NOT CALL!!!`) a function;
+
+-It's safe to omit the `setState` functions from the `useEffect` or `useCallback` dependency list. React guarantees that this won't change on re-renders;
