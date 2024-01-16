@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { log } from '../../log.js';
 
-export const IconButton = ({ children, icon, ...props }) => {
+export const IconButton = memo(({ children, icon, ...props }) => {
   log('<IconButton /> rendered', 2);
 
   const Icon = icon;
@@ -10,4 +11,4 @@ export const IconButton = ({ children, icon, ...props }) => {
       <span className="button-text">{children}</span>
     </button>
   );
-};
+});

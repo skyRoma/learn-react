@@ -216,7 +216,7 @@
 
 - To fix the issue above there is a `useCallback(cb, [deps])` hook that lets you cache a function definition between re-renders. If the `useCallback` dependencies change react will recreate (`NOT CALL!!!`) a function;
 
--It's safe to omit the `setState` functions from the `useEffect` or `useCallback` dependency list. React guarantees that this won't change on re-renders;
+-It's safe to omit the state updating functions (`setState`) from the `useEffect` or `useCallback` dependency list. React guarantees that this won't change on re-renders;
 
 - The `key` prop can be used for any component (not only for lists). And if `key` is changed then the component is fully recreated (like removed from and added to the DOM). Example from 9th project:
 
@@ -226,4 +226,17 @@
     time={3_000}
     onTimeout={handleSkipAnswer}
   />
+  ```
+
+- `const Component = memo(componentFn)` lets us skip re-rendering a component when its props are unchanged. <br>
+  Use carefully:
+
+  - us high up in the component tree as possible;
+  - checking props also costs performance;
+  - don't use where props will change frequently.
+
+- `useMemo` lets us to memoize functions inside a component. Should also be used carefully:
+
+  ```js
+  const isPrime = useMemo(() => isPrimeHeavyFunction(count), [count]);
   ```
