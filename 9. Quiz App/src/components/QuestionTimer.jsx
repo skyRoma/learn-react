@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const QuestionTimer = ({ time, onTimeout }) => {
+export const QuestionTimer = ({ time, onTimeout, mode }) => {
   const [remainingTime, setRemainingTime] = useState(time);
 
   useEffect(() => {
@@ -21,5 +21,12 @@ export const QuestionTimer = ({ time, onTimeout }) => {
     };
   }, []);
 
-  return <progress id="question-time" max={time} value={remainingTime} />;
+  return (
+    <progress
+      id="question-time"
+      max={time}
+      value={remainingTime}
+      className={mode}
+    />
+  );
 };
