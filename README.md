@@ -240,3 +240,24 @@
   ```js
   const isPrime = useMemo(() => isPrimeHeavyFunction(count), [count]);
   ```
+
+- React tracks `state` by component type and position of that component in the tree, that's why the `key` prop is needed;
+
+- If `initialCount` prop will be changed in the parent component, internal `counter` state will not bew reinitialized:
+
+  ```js
+  const Counter = ({ initialCount }) => {
+    // executed only on the initial render
+    const [counter, setCounter] = useState(initialCount);
+
+    return <div>{counter}</div>;
+  };
+  ```
+
+  To fix this we could use `useEffect`, but it will be not optimal. The better way is to fully reset component using `key` prop:
+
+  ```js
+  <Counter key={count} initialCount={count} />
+  ```
+
+- Multiple state updates that are triggered from the same function do not cause multiple re-renders. Instead, they batched together by React and only 1 render is performed;
