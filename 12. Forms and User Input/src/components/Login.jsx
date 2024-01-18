@@ -1,4 +1,8 @@
 export const Login = () => {
+  const handleSubmit = (event) => {
+    console.log('handleSubmit', event);
+  };
+
   return (
     <form>
       <h2>Login</h2>
@@ -17,7 +21,9 @@ export const Login = () => {
 
       <p className="form-actions">
         <button className="button button-flat">Reset</button>
-        <button className="button">Login</button>
+        <button className="button" onClick={handleSubmit}>
+          Login
+        </button>
       </p>
     </form>
   );
