@@ -263,3 +263,5 @@
 - Multiple state updates that are triggered from the same function do not cause multiple re-renders. Instead, they batched together by React and only 1 render is performed;
 
 - For error boundary components we have to use `Class`-based components since the class has `componentDidCatch` lifecycle method which can catch errors from the child components;
+
+- If the `state` inside the `custom hook` is updated then the component that is using this state is also executed again like with regular component state;
