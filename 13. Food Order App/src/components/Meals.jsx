@@ -22,7 +22,7 @@ export const Meals = () => {
   return (
     <ul id="meals">
       {meals.map((meal) => (
-        <Meal key={meal.id} meal={meal} />
+        <Meal key={meal.id} {...meal} />
       ))}
     </ul>
   );

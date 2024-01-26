@@ -1,3 +1,5 @@
+import { Button } from './UI/button';
+
 export const Header = () => {
   return (
     <header id="main-header">
@@ -6,7 +8,7 @@ export const Header = () => {
         <h1>ReactFood</h1>
       </div>
       <nav>
-        <button>Cart (0)</button>
+        <Button>Cart (0)</Button>
       </nav>
     </header>
   );
