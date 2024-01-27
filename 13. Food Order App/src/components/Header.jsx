@@ -1,9 +1,11 @@
 import { useContext } from 'react';
-import { Button } from './UI/button';
+import { Button } from './UI/Button';
 import { CartContext } from '../store/CartContext';
+import { UserProgressContext } from '../store/UserProgressContext';
 
 export const Header = () => {
   const { items } = useContext(CartContext);
+  const { showCart } = useContext(UserProgressContext);
 
   const totalItemsAmount = items.reduce((acc, item) => {
     return acc + item.quantity;
@@ -16,7 +18,7 @@ export const Header = () => {
         <h1>ReactFood</h1>
       </div>
       <nav>
-        <Button>Cart ({totalItemsAmount})</Button>
+        <Button onClick={showCart}>Cart ({totalItemsAmount})</Button>
       </nav>
     </header>
   );
