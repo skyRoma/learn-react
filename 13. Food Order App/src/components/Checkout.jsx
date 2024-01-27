@@ -14,13 +14,31 @@ export const Checkout = () => {
     return total + item.price * item.quantity;
   }, 0);
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(event.target);
+    const data = Object.fromEntries(formData.entries());
+
+    fetch('http://localhost:3000/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ order: { items, customer: data } }),
+    });
+
+    event.target.reset();
+    hideCheckout();
+  };
+
   return (
     <Modal open={progress === 'checkout'} onClose={hideCheckout}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <h2>Checkout</h2>
         <p>Total Amount: {currencyFormatter.format(totalPrice)}</p>
 
-        <Input label="Full Name" id="full-name" type="text" />
+        <Input label="Full Name" id="name" type="text" />
         <Input label="E-Mail Address" id="email" type="email" />
         <Input label="Street" id="street" type="text" />
 
