@@ -1,0 +1,7 @@
+{
+  "name": "14.-redux-without-react",
+  "main": "redux-demo.js",
+  "dependencies": {
+    "redux": "^5.0.1"
+  }
+}
