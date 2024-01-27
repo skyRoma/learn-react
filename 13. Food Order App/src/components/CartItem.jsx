@@ -8,7 +8,7 @@ export const CartItem = ({ item, onAdd, onRemove }) => {
       </p>
       <p className="cart-item-actions">
         <button onClick={() => onRemove(item.id)}>-</button>
-        <p>{item.quantity}</p>
+        <span>{item.quantity}</span>
         <button onClick={() => onAdd(item)}>+</button>
       </p>
     </li>

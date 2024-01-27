@@ -15,7 +15,11 @@ export const Cart = () => {
   }, 0);
 
   return (
-    <Modal className="cart" open={progress === 'cart'}>
+    <Modal
+      className="cart"
+      open={progress === 'cart'}
+      onClose={progress === 'cart' ? hideCart : null}
+    >
       <h2>Your Cart</h2>
       <ul>
         {items.map((item) => (
@@ -33,7 +37,9 @@ export const Cart = () => {
         <Button textOnly onClick={hideCart}>
           Close
         </Button>
-        <Button onClick={showCheckout}>Go to Checkout</Button>
+        {items.length > 0 && (
+          <Button onClick={showCheckout}>Go to Checkout</Button>
+        )}
       </p>
     </Modal>
   );
