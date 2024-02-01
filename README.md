@@ -267,5 +267,9 @@
 - If the `state` inside the `custom hook` is updated then the component that is using this state is also executed again like with regular component state;
 
 - Why `Redux` library and not just built-in `Context`?
+
   - In large enterprise apps it can be hard to read and maintain a lot of Contexts (or a 1 large universal Context);
   - Performance. Context is great for low-frequency updates. Redux for high-frequency updates;
+  - redux devtools is also a very good plus in favor of redux;
+
+- We can use side-effects with Redux inside the component itself, without involving the Redux in it, or inside the action creator;
