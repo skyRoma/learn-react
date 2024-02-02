@@ -275,3 +275,17 @@
 - We can use side-effects with Redux inside the component itself, without involving the Redux in it, or inside the action creator;
 
 - Routes that begin with `/` are absolute;
+
+- We can preload data for the route component using loader:
+
+  ```js
+  {
+    index: true; // path: ''
+    element: <EventsPage />,
+    loader: async () => {
+      const response = await fetch('http://localhost:8080/events');
+      const resData = await response.json();
+      return resData.events;
+    }
+  }
+  ```
