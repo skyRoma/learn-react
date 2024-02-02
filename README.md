@@ -273,3 +273,5 @@
   - redux devtools is also a very good plus in favor of redux;
 
 - We can use side-effects with Redux inside the component itself, without involving the Redux in it, or inside the action creator;
+
+- Routes that begin with `/` are absolute;
