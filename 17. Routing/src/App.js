@@ -11,7 +11,7 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     errorElement: <Error />,
     children: [
-      { path: '', element: <HomePage /> },
+      { index: true, element: <HomePage /> }, // index: true means that this route will be used when the path is empty, like: path: ''
       { path: 'products', element: <ProductsPage /> },
       { path: 'products/:productId', element: <ProductDetailPage /> },
     ],
