@@ -22,7 +22,7 @@ export const EventForm = ({ method, event }) => {
 
   return (
     <Form method={method} className={classes.form}>
-      {data && data.errors && (
+      {data?.errors && (
         <ul>
           {Object.values(data.errors).map((error) => (
             <li key={error}>{error}</li>

@@ -301,3 +301,5 @@
   ```
 
 - For `loaders` and `actions` with a long delay we can provide feedback to he user about the progress using `useNavigation().state`;
+
+- `useFetcher` is used to trigger the action from the not current route;
