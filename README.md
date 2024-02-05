@@ -276,7 +276,7 @@
 
 - Routes that begin with `/` are absolute;
 
-- We can preload data for the route component using loader:
+- We can preload data for the route component using `loader`:
 
   ```js
   {
@@ -289,3 +289,15 @@
     }
   }
   ```
+
+- We can submit data to the backend in the route component using `action`:
+
+  ```js
+  {
+    index: true; // path: ''
+    element: <EventDetailPage />,
+    action: deleteEventAction,
+  }
+  ```
+
+- For `loaders` and `actions` with a long delay we can provide feedback to he user about the progress using `useNavigation().state`;
