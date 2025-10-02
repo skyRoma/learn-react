@@ -70,6 +70,18 @@
   }
   ```
 
+- New state value will be available only after the component is re-executed again:
+
+  ```js
+  const [selectedTopic, setSelectedTopic] = React.useState("Text");
+
+  function handleSelectedTopic(newTopic) {
+    setSelectedTopic(newTopic);
+    // still logs tje old value
+    console.log(selectedTopic);
+  }
+  ```
+
 - It's possible to set component type dynamically:
 
   ```js
