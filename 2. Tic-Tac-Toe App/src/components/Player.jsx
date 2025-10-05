@@ -16,13 +16,18 @@ export const Player = ({ initialName, symbol, isActive, onChangeName }) => {
     setName(event.target.value);
   };
 
+  let playerName = <span className="player-name">{name}</span>;
+
+  if (isEditing) {
+    playerName = (
+      <input type="text" required value={name} onChange={handleChange} />
+    );
+  }
+
   return (
     <li className={isActive ? 'active' : null}>
       <span className="player">
-        {isEditing && (
-          <input type="text" required value={name} onChange={handleChange} />
-        )}
-        {!isEditing && <span className="player-name">{name}</span>}
+        {playerName}
         <span className="player-symbol">{symbol}</span>
       </span>
       <button onClick={handleClick}>{isEditing ? 'Save' : 'Edit'}</button>

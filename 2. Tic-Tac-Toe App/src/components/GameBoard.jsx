@@ -4,13 +4,13 @@ export const GameBoard = ({ gameBoard, onSelect }) => {
       {gameBoard.map((row, rowIndex) => (
         <li key={rowIndex}>
           <ol>
-            {row.map((col, colIndex) => (
+            {row.map((playerSymbol, colIndex) => (
               <li key={colIndex}>
                 <button
                   onClick={() => onSelect(rowIndex, colIndex)}
-                  disabled={col}
+                  disabled={playerSymbol}
                 >
-                  {col}
+                  {playerSymbol}
                 </button>
               </li>
             ))}

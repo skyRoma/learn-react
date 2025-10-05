@@ -73,7 +73,7 @@
 - New state value will be available only after the component is re-executed again:
 
   ```js
-  const [selectedTopic, setSelectedTopic] = React.useState("Text");
+  const [selectedTopic, setSelectedTopic] = React.useState('Text');
 
   function handleSelectedTopic(newTopic) {
     setSelectedTopic(newTopic);
@@ -85,14 +85,49 @@
 - It's possible to set component type dynamically:
 
   ```js
-  export function Tabs({ buttons, CustomComponent }) {
+  export function Tabs({ buttons, customComponent }) {
     // variable should start with uppercase letter
     const ButtonsContainer = 'div';
     // Or it can be custom component:
-    const ButtonsContainer = CustomComponent;
+    const ButtonsContainer = customComponent;
 
     return <ButtonsContainer>{buttons}</ButtonsContainer>;
   }
+  ```
+
+  or
+
+  ```js
+  // menu is the default prop, if nothing will be passed in
+  export function Tabs({ buttons, CustomComponent = 'menu' }) {
+    return <CustomComponent>{buttons}</CustomComponent>;
+  }
+  ```
+
+  ```js
+  export const Wrapper = () => (
+    // for built-in elements
+    <Tabs
+      CustomComponent="div"
+      buttons={
+        <>
+          <button></button>
+          <button></button>
+        </>
+      }
+    />
+
+    // for custom elements
+    <Tabs
+      CustomComponent={AnotherCustomComponent}
+      buttons={
+          <>
+            <button></button>
+            <button></button>
+          </>
+        }
+    />
+  )
   ```
 
 - All files stored in the `public` folder are publicly available (`localhost:5173/some-image.jpg`) and will be served alongside with the `index.html` file, so they can be referenced globally in `index.html`, `index.css` or in the any component:
@@ -101,15 +136,30 @@
   <img src="game-logo.png" />
   ```
 
+- You should use the public/ folder for any images that should not be handled by the build process and that should be generally available. Good candidates are images used directly in the `index.html file or favicons`.
+  On the other hand, images that are used `inside of components` should typically be stored in the `src/` folder (e.g., in src/assets/).
+
 - If the new state is computed using the previous state, it's better to pass a function to setState. The function will receive the previous value, and return an updated value:
 
   ```js
   setCount((prevCount) => prevCount + 1);
   ```
 
+  because:
+
+  ```js
+  const [isEditing, setIsEditing] = useState(false);
+
+  setIsEditing(!isEditing); // -> schedules a state update to true based on current value
+  setIsEditing(!isEditing); // -> schedules a state update to true based on current value
+  ```
+
   [Detailed explanation how state update works](https://react.dev/learn/queueing-a-series-of-state-updates)
 
 - `event.target.value` from the input field is always of type `String`;
+- Be careful with lifting state up, it can lead to the unnecessary re-render of the parent element. Sometimes it's better to create a new state;
+- `useState(props.initialValue)` uses the initialValue only on the first render.
+  If the prop changes later, React will not reset the state — you need `useEffect` to sync it.
 
 - `import ./Header.css` - vanilla CSS styles are not scoped to components;
 - `import classes from './Header.module.css'` - css module styles are scoped;
