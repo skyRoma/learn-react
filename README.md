@@ -164,6 +164,26 @@
 - `import ./Header.css` - vanilla CSS styles are not scoped to components;
 - `import classes from './Header.module.css'` - css module styles are scoped;
 
+  ```html
+  <p className="{classes.paragraph}">text</p>
+  ```
+
+  `paragraph` key in classes object is a generated unique string;
+
+- Inline styles:
+
+  ```html
+  <p style={
+    { color: 'red', textAlign: 'left'}
+  }>text</p>
+  ```
+
+- Dynamic classes:
+
+  ```html
+  <p className={!isValid ? 'invalid' : ''}>text</p>
+  ```
+
 - Styled Components `props` should be named with `$` prefix to not clash build-in props:
 
   ```js
