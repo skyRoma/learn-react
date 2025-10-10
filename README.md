@@ -184,6 +184,30 @@
   <p className={!isValid ? 'invalid' : ''}>text</p>
   ```
 
+- example of styled component:
+  ```js
+  const StyledHeader = styled.header`
+    display: flex;
+    color: ${({ $invalid }) => ($invalid ? '#f87171' : '#6b7280')};
+
+    &:hover {
+      background-color: #f0920e;
+    }
+
+    img {
+      width: 11rem;
+    }
+
+    @media (min-width: 768px) {
+      margin-bottom: 4rem;
+
+      h1 {
+        font-size: 2.25rem;
+      }
+    }
+  `;
+  ```
+
 - Styled Components `props` should be named with `$` prefix to not clash build-in props:
 
   ```js
