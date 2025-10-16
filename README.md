@@ -39,6 +39,18 @@
 
   [More info](https://www.upbeatcode.com/react/css-scoping-in-react-everything-you-need-to-know/)
 
+- Default props:
+
+  ```js
+  function Welcome(props) {
+    return <h1>Hello, {props.name}</h1>;
+  }
+
+  Welcome.defaultProps = {
+    name: 'Galactic Traveler',
+  };
+  ```
+
 - `props.children` - this is all the content that is between the opening and closing tags of this component;
 
 - `onClick={handleClick}` - naming convention for event handlers.
@@ -242,7 +254,7 @@
   </StrictMode>
   ```
 
-- Refs
+- Refs. Controlled (with state) vs Uncontrolled (with refs) components.
 
   - without:
 
@@ -322,7 +334,92 @@
 
 - To fix the issue above there is a `useCallback(cb, [deps])` hook that lets you cache a function definition between re-renders. If the `useCallback` dependencies change react will recreate (`NOT CALL!!!`) a function;
 
--It's safe to omit the state updating functions (`setState`) from the `useEffect` or `useCallback` dependency list. React guarantees that this won't change on re-renders;
+- Always work with `async` functions within the scope of the useEffect parameter function – never pass an async function directly to `useEffect`:
+
+  ```js
+  // Mock async function
+  const asyncFunc = async () => {
+    return Promise.resolve('Updated state');
+  };
+
+  useEffect(() => {
+    const callAsyncFunc = async () => {
+      let val = await asyncFunc();
+      setState(val);
+    };
+
+    callAsyncFunc();
+  }, []);
+  ```
+
+  not:
+
+  ```js
+  useEffect(() => {
+    let val = await asyncFunc();
+    setState(val);
+  }, []);
+  ```
+
+- It's safe to omit the state updating functions (`setState`) from the `useEffect` or `useCallback` dependency list. React guarantees that this won't change on re-renders;
+
+- Retry mechanism:
+
+  ```js
+  function App() {
+    const [data, setData] = useState(null);
+    const [error, setError] = useState(null);
+    const [retries, setRetries] = useState(0);
+
+    useEffect(() => {
+      if (retries < 3) {
+        // Limit the number of retries to 3
+        fetch(
+          'https://api-regional.codesignalcontent.com/posting-application-2/posts/'
+        )
+          .then((response) => {
+            if (!response.ok) {
+              throw Error(response.statusText);
+            }
+            return response.json();
+          })
+          .then((data) => setData(data))
+          .catch((error) => {
+            setError(error);
+            setRetries(retries + 1); // Increment the number of retries if an error occurs
+          });
+      }
+    }, [retries]); // Rerun the effect if retries number changed
+
+    return (
+      <div className="App">
+        {error ? (
+          <p>{error.message}</p>
+        ) : data ? (
+          <p>Data fetched successfully!</p>
+        ) : (
+          'Loading...'
+        )}
+      </div>
+    );
+  }
+  ```
+
+- Great pattern to work with axios:
+
+  ```js
+  const instance = axios.create({
+    baseURL: 'https://api-regional.codesignalcontent.com/posting-application-2',
+  });
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await instance.get('/posts/');
+      setPosts(response.data);
+    }
+    fetchData();
+  }, []);
+  ```
 
 - The `key` prop can be used for any component (not only for lists). And if `key` is changed then the component is fully recreated (like removed from and added to the DOM). Example from 9th project:
 
@@ -370,6 +467,86 @@
 
 - For error boundary components we have to use `Class`-based components since the class has `componentDidCatch` lifecycle method which can catch errors from the child components;
 
+- ErrorBoundary component.
+
+  ```js
+  import { ErrorBoundary as ReactErrorBoundary } from 'react-error-boundary';
+
+  function ComponentWithError() {
+    throw new Error('Unexpected error occurred in the component.'); // This component throws an error
+  }
+
+  function LoginPage() {
+    return (
+      <ReactErrorBoundary fallback={<h2>Oops...something went wrong.</h2>}>
+        // Using ReactErrorBoundary to wrap our component
+        <ComponentWithError />
+      </ReactErrorBoundary>
+    );
+  }
+  ```
+
+  Note: React's Error Boundaries do not catch errors thrown inside event handlers (e.g., within an onClick function).
+
+- Resetting error:
+
+  ```js
+  import { ErrorBoundary } from 'react-error-boundary';
+
+  function ComponentWithError() {
+    throw new Error('Oops! Something went wrong.');
+  }
+
+  function ErrorFallback({ error, resetErrorBoundary }) {
+    return (
+      <div>
+        <p>Error: {error.message}</p>
+        <button onClick={resetErrorBoundary}>Try again</button>
+      </div>
+    );
+  }
+
+  function MyApp() {
+    return (
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <ComponentWithError />
+      </ErrorBoundary>
+    );
+  }
+  ```
+
+- Custom hook:
+
+  ```js
+  const useFetchWeather = (url, lat, lng) => {
+    const [weather, setWeather] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+      fetch(`${url}?lat=${lat}&lng=${lng}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setWeather(data.weather);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setIsLoading(false);
+        });
+
+      // No cleanup function needed as nothing to cancel/cleanup here
+    }, [url, lat, lng]);
+
+    return { weather, isLoading, error };
+  };
+  ```
+
 - If the `state` inside the `custom hook` is updated then the component that is using this state is also executed again like with regular component state;
 
 - Why `Redux` library and not just built-in `Context`?
@@ -379,6 +556,134 @@
   - redux devtools is also a very good plus in favor of redux;
 
 - We can use side-effects with Redux inside the component itself, without involving the Redux in it, or inside the action creator;
+
+- Routing v6:
+
+  ```js
+  import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Link,
+  } from 'react-router-dom';
+
+  function App() {
+    const user = getUserDetails();
+
+    return (
+      <Router>
+        <nav>
+          <Link to="/">Home</Link>
+          <Link to="/about">About</Link>
+          <NavLink to="/profile" activeClassName="active" style={({ isActive }) => ({color: isActive ? 'orange' : 'blue' })}>Profile</NavLink>
+        </nav>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <!-- Route protection -->
+          <Route
+            path="/profile"
+            element={user ? <Profile /> : <Navigate to="/login" />}
+          >
+            <Route index element={<ProfileOverview />} />
+            <Route path="details" element={<ProfileDetails />} />
+            <Route path="settings" element={<ProfileSettings />} />
+          </Route>
+          <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </Router>
+    );
+  }
+
+  function Profile() {
+    return (
+      <div>
+        <h2>User Profile</h2>
+        <nav>
+          <Link to="details">Details</Link>
+          <Link to="settings">Settings</Link>
+        </nav>
+        <Outlet />
+      </div>
+    );
+  }
+  ```
+
+- Navigating `Navigate`
+
+  ```js
+  import { Navigate } from 'react-router-dom';
+
+  function ProfileSettings() {
+    const [updated, setUpdated] = useState(false);
+
+    function updateSettings() {
+      setUpdated(true);
+    }
+
+    // If settings are updated, navigate to ProfileDetails
+    return updated ? <Navigate to="../details" /> : <SettingsComponent />;
+  }
+  ```
+
+- Dynamic routes
+
+  ```js
+  export default function App() {
+    return (
+      <BrowserRouter>
+        <h1>Welcome to Intergalactic Travel!</h1>
+        <nav>
+          <Link to="/planet/Mars/11">Visit Mars</Link>
+        </nav>
+        <Routes>
+          <Route path="/planet/:name/:code" element={<Planet />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
+
+  export function Planet() {
+    let { name, code } = useParams();
+    return (
+      <h2>
+        Welcome to {name}! The red {code}planet awaits you.
+      </h2>
+    );
+  }
+  ```
+
+- Navigate programmatically:
+
+  ```js
+  import { useNavigate } from 'react-router-dom';
+  import { useLocation } from 'react-router-dom';
+
+  const BackButton = () => {
+    let navigate = useNavigate();
+
+    let handleClick = () => {
+      navigate(-1); // Takes you back one step in your route history.
+    };
+
+    return <button onClick={handleClick}>Go Back</button>;
+  };
+
+  function UpdateButton() {
+    let navigate = useNavigate();
+
+    let handleClick = () => {
+      navigate('/login', { state: { from: 'update' } }); // Adds state when navigating
+    };
+
+    return <button onClick={handleClick}>Update post</button>;
+  }
+
+  function Login() {
+    let location = useLocation();
+    let from = location.state?.from; // Accesses the state passed during navigation
+  }
+  ```
 
 - Routes that begin with `/` are absolute;
 
