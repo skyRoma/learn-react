@@ -197,6 +197,7 @@
   ```
 
 - example of styled component:
+
   ```js
   const StyledHeader = styled.header`
     display: flex;
@@ -309,14 +310,33 @@
   }
   ```
 
+- The ref attribute is natively supported by all built-in HTML elements, such as `<div>, <span>, <input>`, etc.. React assigns the corresponding DOM node to the `.current` property of the ref object.
+
 - `inputRef.current` is undefined during the first render, since `inputRef` is not connected to `input` yet;
 
-- `Refs` can be used like instance fields in classes, i.e. if we want to store some value between component renders but not to update the UI when this value is changed (unlike `state`);
+- `Refs` can be used like instance fields in classes, i.e. if we want to store some value between component renders but not to update the UI when this value is changed (unlike `state`); When the ref changes, component doesn't re-execute.
 
-- Use `forwardRef` to pass the `ref` from one component to another;
-- Use `useImperativeHandle` together with `forwardRef` to expose the child's public API to the parent component;
+- `DEPRECATED! From v19 you can pass ref as normal prop` ~~Use `forwardRef` to pass the `ref` from one component to another;~~
+- Use `useImperativeHandle` to expose the child's public API to the parent component;
+
+- `createPortal(children, domNode, key?)` allows you to render children into a different DOM node (like `document.body`) while keeping them in the same React component hierarchy for context and event flow.
 
 - `Prop Drilling` - Passing shared data through multiple component layers;
+
+- Using Component Composition with the `children` prop allows a parent component to directly render the final component that needs a specific prop, passing it as a child to intermediate wrapper components, thereby avoiding prop drilling.
+
+  ```js
+  function App() {
+    const user = { name: 'Alice' };
+
+    return (
+      <Toolbar>
+        {/* Pass the ProfileButton as a child to Toolbar */}
+        <ProfileButton user={user} />
+      </Toolbar>
+    );
+  }
+  ```
 
 - The default value set when creating the context is only used if a component that was not wrapped by the `Provider` component tries to access the context value and for better autocompletion:
 
@@ -324,11 +344,13 @@
   export const CartContext = createContext({ items: [] });
   ```
 
+- The `use()` is a hook-like function that enables components to synchronously read the value of Promises or Context directly within the render method. It simplifies asynchronous logic by allowing components to access resolved data without the boilerplate of `useState` and `useEffect`, leveraging `Suspense` to automatically handle loading states and `Error Boundaries` for declarative error handling. This approach results in cleaner, more readable code and, unlike traditional Hooks, allows for conditional (`if()`) access to Context or data.
+
 - callback inside `useEffect(cb, [deps])` is executed only after the component function is executed/rendered. And this `cb` is executed only once if the 2nd argument is an empty array `[]`. Without 2nd argument it will be executed after every component render cycle;
 
-- not every side effect needs `useEffect`. We need it only to prevent infinite loops or we have code that can only run after the component function is executed at least once;
+- not every side effect needs `useEffect`. We need it only to prevent infinite loops or we have code that can only run after the component function is executed at least once (e.g. for `ref.current` usage);
 
-- Cleanup function in `useEffect` runs every time before a new call of `useEffect` callback function and after the component is removed from the DOM;
+- Cleanup function in `useEffect` runs every time before a new call of `useEffect` callback function (but not before the initial call) and after the component is removed from the DOM;
 
 - If the `useEffect` dependency is a function created inside a component then it could lead to an infinite loop, since every render creates a new instance of that function `new function(){} !== new function(){}`;
 
@@ -463,7 +485,7 @@
   <Counter key={count} initialCount={count} />
   ```
 
-- Multiple state updates that are triggered from the same function do not cause multiple re-renders. Instead, they batched together by React and only 1 render is performed;
+- Multiple state updates that are triggered from the same function do not cause multiple re-renders. Instead, they `batched` together by React and only 1 render is performed;
 
 - For error boundary components we have to use `Class`-based components since the class has `componentDidCatch` lifecycle method which can catch errors from the child components;
 
