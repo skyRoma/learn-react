@@ -1,0 +1,22 @@
+.listItemEven {
+  background-color: #f7ffef;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  transition: background-color 0.1s ease;
+}
+
+.listItemOdd {
+  background-color: #ffffff;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  transition: background-color 0.1s ease;
+}
+
+.listItemEven:hover,
+.listItemOdd:hover {
+  background-color: #e0f7fa; /* Более заметный фон при наведении */
+}

@@ -6,6 +6,14 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { action, NewPost } from './routes/NewPost/NewPost'
 import { RootLayout } from './routes/RootLayout'
 import { PostDetails, postDetailsLoader } from './routes/PostDetails/PostDetails'
+import { Tasks } from './routes/Tasks/Tasks'
+import { Search } from './routes/Search/Search'
+import { Windowing } from './routes/Windowing/Windowing'
+import { Custom } from './routes/VirtualizedList/VirtualizedList'
+import DaD from './routes/DaD/Dad'
+import { MultiStepForm } from './routes/Validation/MultiStepForm'
+import { WorkerComponent } from './routes/Worker/Worker'
+import MovieBrowser from './routes/SystemDesign/Task1'
 
 const router = createBrowserRouter([
   {
@@ -29,12 +37,44 @@ const router = createBrowserRouter([
           },
         ],
       },
+      {
+        path: '/tasks',
+        element: <Tasks />,
+      },
+      {
+        path: '/search',
+        element: <Search />,
+      },
+      {
+        path: '/windowing',
+        element: <Windowing />,
+      },
+      {
+        path: '/windowing-custom',
+        element: <Custom />,
+      },
+      {
+        path: '/dad',
+        element: <DaD />,
+      },
+      {
+        path: '/validation',
+        element: <MultiStepForm />,
+      },
+      {
+        path: '/worker',
+        element: <WorkerComponent />,
+      },
+      {
+        path: '/design',
+        element: <MovieBrowser />,
+      },
     ],
   },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />;
+    <RouterProvider router={router} />
   </React.StrictMode >
 )

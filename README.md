@@ -177,7 +177,7 @@
 - `import classes from './Header.module.css'` - css module styles are scoped;
 
   ```html
-  <p className="{classes.paragraph}">text</p>
+  <p className={classes.paragraph}>text</p>
   ```
 
   `paragraph` key in classes object is a generated unique string;
