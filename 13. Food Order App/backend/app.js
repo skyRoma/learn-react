@@ -23,6 +23,10 @@ app.get('/meals', async (req, res) => {
 app.post('/orders', async (req, res) => {
   const orderData = req.body.order;
 
+  await new Promise(res => setTimeout(() => {
+    res();
+  }, 1000));
+
   if (
     orderData === null ||
     orderData.items === null ||
