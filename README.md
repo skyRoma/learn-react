@@ -736,3 +736,60 @@
 - For `loaders` and `actions` with a long delay we can provide feedback to he user about the progress using `useNavigation().state` or returning `defer(...)` inside the loader;
 
 - `useFetcher` is used to trigger the action from the not current route;
+
+- `@tanstack/react-query`:
+
+  ```js
+  const { data, isPending, isError, error } = useQuery({
+    queryFn: fetchEvents,
+    queryKey: ['events'],
+    staleTime: 5000, // how long data is considered fresh
+    // gcTime: 1000 * 60  // how long unused data stays in cache
+  });
+  ```
+
+- Pattern to work with form submission:
+
+  ```js
+  const handleSubmit = (event) => {
+    const formData = new FormData(event.target);
+
+    const email = formData.get('email');
+    // checkboxes with the same name will be grouped into an array
+    const acquisitionChannels = formData.getAll('acquisition');
+
+    const data = Object.fromEntries(formData.entries());
+    data.acquisition = acquisitionChannels;
+  };
+  ```
+
+- Good way to handle forms - Form Actions. `useActionState` + `useOptimistic` + `useFormStatus` hooks. See 21 and 22 examples.
+
+- Lazy loading:
+
+  ```js
+  const AboutPage = lazy(() => import('./pages/About'));
+
+  {
+    path: ':id',
+    element: (
+      <Suspense fallback={<p>Loading...</p>}>
+        <AboutPage />
+      </Suspense>
+    ),
+    loader: (meta) => import('./pages/Post').then((module) => module.loader(meta)),
+  }
+  ```
+
+- React Server Components:
+  - never executed on the client
+  - can fetch data
+  - rendered on the server and result is sent to the client
+  - can include client components
+  - can be async
+- Client Components:
+  - rendered on the server and client
+  - client-side features can be used (react hooks)
+  - can include RSC only via `children`
+  - can't be async
+  - can include Server form action and promises (via `use` hook)
