@@ -793,3 +793,27 @@
   - can include RSC only via `children`
   - can't be async
   - can include Server form action and promises (via `use` hook)
+
+- The Route can be protected by loader:
+
+  ```js
+  export function checkAuthLoader() {
+    const token = getAuthToken();
+
+    if (!token) {
+      return redirect('/auth');
+    }
+
+    return null;
+  }
+
+  const router = createBrowserRouter([
+    {
+      path: 'edit',
+      element: <EditEventPage />,
+      loader: checkAuthLoader,
+    },
+  ]);
+  ```
+
+- When a form `action` successfully completes (for instance, by performing a logout and then sending the user to a new page), React Router automatically triggers a "revalidation" of the data `loaders` on that new page. This is done to ensure the UI immediately reflects the most current server state.

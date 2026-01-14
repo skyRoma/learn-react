@@ -30,7 +30,6 @@ export const initialState = {
 export function formReducer(state, action) {
   switch (action.type) {
     case ActionType.UPDATE_FIELD:
-      console.log(action.payload)
       return {
         ...state,
         data: {
