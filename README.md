@@ -763,7 +763,7 @@
   };
   ```
 
-- Good way to handle forms - Form Actions. `useActionState` + `useOptimistic` + `useFormStatus` hooks. See 21 and 22 examples.
+- Good way to handle forms - Form Actions. `useActionState` + `useOptimistic` + `useFormStatus` hooks. See 21 and 22 examples;
 
 - Lazy loading:
 
@@ -816,4 +816,12 @@
   ]);
   ```
 
-- When a form `action` successfully completes (for instance, by performing a logout and then sending the user to a new page), React Router automatically triggers a "revalidation" of the data `loaders` on that new page. This is done to ensure the UI immediately reflects the most current server state.
+- When a form `action` successfully completes (for instance, by performing a logout and then sending the user to a new page), React Router automatically triggers a "revalidation" of the data `loaders` on that new page. This is done to ensure the UI immediately reflects the most current server state;
+
+- In NextJs routing is configured through paths in the `app` folder and reserved page names - page and layout (e.g. `app/about/page.js` = `my-site.com/about`);
+  Some other important reserved filenames:
+  - layout.js => Create a new layout that wraps sibling and nested pages
+  - not-found.js => Fallback page for "Not Found" errors (thrown by sibling or nested pages or layouts)
+  - error.js => Fallback page for other errors (thrown by sibling pages or nested pages or layouts)
+  - loading.js => Fallback page which is shown whilst sibling or nested pages (or layouts) are fetching data
+  - route.js => Allows you to create an API route (i.e., a page which does NOT return JSX code but instead data, e.g., in the JSON format)
