@@ -3,6 +3,16 @@ import classes from './page.module.css'
 import { getMeal } from '@/lib/meals';
 import { notFound } from 'next/navigation';
 
+export async function generateMetadata({ params }) {
+    const { id } = await params;
+    const meal = await getMeal(id);
+
+    return {
+        title: meal.title,
+        description: meal.description
+    }
+}
+
 export default async function MealPage({ params }) {
     const { id } = await params;
     const meal = await getMeal(id);
