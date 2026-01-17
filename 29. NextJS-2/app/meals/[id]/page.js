@@ -28,6 +28,12 @@ export default async function MealPage({ params }) {
             <header className={classes.header}>
                 <div className={classes.image}>
                     <Image src={meal.image} alt={meal.title} fill />
+                    {/* for AWS S3 */}
+                    {/* <Image
+                        src={`https://maxschwarzmueller-nextjs-demo-users-image.s3.amazonaws.com/${meal.image}`}
+                        alt={meal.title}
+                        fill
+                    /> */}
                 </div>
 
                 <div className={classes.headerText}>

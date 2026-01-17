@@ -10,6 +10,12 @@ export default function MealItem({ title, slug, image, summary, creator }) {
             <header>
                 <div className={classes.image}>
                     <Image src={image} alt={title} fill />
+                    {/* for AWS S3 */}
+                    {/* <Image
+                        src={`https://maxschwarzmueller-nextjs-demo-users-image.s3.amazonaws.com/${image}`}
+                        alt={title}
+                        fill
+                    /> */}
                 </div>
                 <div className={classes.headerText}>
                     <h2>{title}</h2>
